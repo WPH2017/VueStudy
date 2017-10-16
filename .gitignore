@@ -59,3 +59,6 @@ typings/
 
 # desktop.ini
 desktop.ini
+
+# idea
+.idea/

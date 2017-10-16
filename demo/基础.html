@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en" xmlns:>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>基础</title>
+  <script src="https://cdn.bootcss.com/vue/2.4.4/vue.min.js"></script>
+</head>
+<body>
+<div id="var">
+  <div>{{ name }}</div>
+  <!-- v-text绑定innerText， v-html绑定innerHTML -->
+  <div v-text="play" @dblclick.once="console.log(1)"></div>
+  <div v-text="play" @auxclick="function(e){console.log(e)}"></div>
+  <div v-html="play"></div>
+
+  <!-- copy,cut,paste用于任意元素 -->
+  <div @paste="console.log('正在拷贝')">是的</div>
+  <div v-if="show">12</div>
+  <div v-show="showit">12</div>
+</div>
+
+</body>
+<script>
+  let app=new Vue({
+    el:'#var',
+    data:{
+      name:'Vue测试字段',
+      play:`<h1>这是一个h1标题</h1>`,
+      show:true,
+      showit:false
+    },
+//    生命周期hack
+    beforeCreated(){},
+    created(){},
+    beforeMount(){},
+    mounted(){},
+    beforeUpdate(){},
+    updated(){},
+    activated(){},
+    deactivated(){},
+    beforeDestroy(){},
+    destroyed(){}
+  });
+
+//  对于Vue对象，不会实时监听整个DOM
+  setTimeout(function(){
+    let a=document.createElement('div');
+    a.id='test';
+    a.innerHTML='{{name}}';
+    document.body.appendChild(a)
+  },2000);
+
+  let app2=new Vue({
+    el:'#test',
+    data:{
+      name:'数据在的'
+    },
+    created(){
+      console.log("创建了",this)
+    }
+  });
+</script>
+</html>

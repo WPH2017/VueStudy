@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>模板</title>
+  <script src="https://cdn.bootcss.com/vue/2.4.4/vue.min.js"></script>
+</head>
+<body>
+
+<div id="box">{{html}}</div>
+<script type="x-template" id="app">
+  <div>{{name}}</div>
+</script>
+
+<div id="box2"></div>
+
+<script>
+  let app=new Vue({
+//    作为挂载点的元素会被直接替换
+    el:"#box",
+    data:{
+      name:'是的',
+      html:'<h1>标题</h1>'
+    },
+    template:"#app"
+  });
+
+//  渲染
+  let app2=new Vue({
+    el:"#box2",
+    data:{name:'剥削2'},
+    render(createElement){
+      return createElement(
+          'ul',{
+            'class':{
+              bg:true
+            },
+            style:{
+              fontSize:'20px'
+            },
+            attrs:{
+              'data-size':'1234好大'
+            }
+          },
+          [
+            createElement('li',2),
+            createElement('li',1),
+            createElement('li',3),
+          ]
+      )
+    }
+  });
+
+</script>
+</body>
+</html>
