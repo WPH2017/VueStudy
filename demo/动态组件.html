@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>动态组件</title>
+    <script src="https://cdn.bootcss.com/vue/2.4.4/vue.min.js"></script>
+</head>
+
+<body>
+    <div id="box">
+        <button @click="name=((name==='hello')?'world':'hello')">切换</button>
+        <hello></hello>
+        <world></world>
+        <!-- component配合is属性 -->
+        <component :is="name"></component>
+    </div>
+    <script>
+        let app = new Vue({
+            el: '#box',
+            data: {
+                name: 'hello'
+            },
+            components: {
+                'hello': {
+                    template: `<h2>我是hello组件</h2>`
+                },
+                'world': {
+                    template: `<h2>我是world组件</h2>`
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

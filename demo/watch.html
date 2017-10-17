@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Watch</title>
+    <script src="https://cdn.bootcss.com/vue/2.4.4/vue.min.js"></script>
+</head>
+
+<body>
+    <div id="box">
+
+    </div>
+    <script>
+        // 两种方法
+        // 1. 实例化选项中设置监听
+        // 2. 实例方法设置监听
+        let vm = new Vue({
+            el: '#box',
+            data: {
+                a: 1,
+                b: '1',
+                c: [1, 2, 3],
+                // 如果是对象，需要设置深度监听
+                d: {
+                    name: null
+                }
+            },
+            watch: {
+                // 设置的顺序就是触发时的执行顺序
+                a(val, old) {
+                    console.log('a旧值:', old);
+                    console.log('a当前值:', val);
+                },
+                b(val, old) {
+                    console.log('b旧值:', old);
+                    console.log('b当前值:', val);
+                },
+                // c的监听用Vue实例方法来写
+                // d是一个对象，它的监听需要设置深度监听
+                d: {
+                    handler: (val, old) => {
+                        console.log('d旧值:', old.name);
+                        console.log('d当前值:', val.name);
+                    },
+                    deep: true,
+                    // 立即触发handler
+                    // immediate: true
+                }
+            }
+        });
+        vm.$watch('c', (val, old) => {
+            console.log('c旧值:', old);
+            console.log('c当前值:', val);
+        });
+        // 深度监听的实例方法写法
+        // vm.$watch('d', (val, old) => {
+        //     console.log('d旧值:', old.name);
+        //     console.log('d当前值:', val.name);
+        // }, {
+        //     deep: true
+        // });
+        // 示例
+        document.onclick = () => {
+            vm.a++;
+            vm.b += '1';
+            vm.c.push(vm.a);
+            vm.d.name += '1';
+        }
+    </script>
+</body>
+
+</html>

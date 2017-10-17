@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>过滤器</title>
+    <script src="https://cdn.bootcss.com/vue/2.4.4/vue.min.js"></script>
+</head>
+
+<body>
+    <div id="box">
+        {{ wph | hello }} <br>
+        <button>{{ dates | date }}</button> {{dates}}
+    </div>
+    <script>
+        Vue.filter('hello', val => val < 10 ? '0' + val : val);
+        Vue.filter('date', val => {
+            let date = new Date(val);
+            return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay() + ' T ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + ' 尼玛好长的代码';
+        });
+        let vm = new Vue({
+            el: '#box',
+            data: {
+                wph: 8,
+                dates: Date.now()
+            }
+        });
+        setInterval(() => {
+            vm.dates = Date.now();
+        }, 1000);
+    </script>
+</body>
+
+</html>
