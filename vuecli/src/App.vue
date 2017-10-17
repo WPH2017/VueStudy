@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png" @click.shift="count++">
+    <img src="./assets/logo.png" @click.alt="count++">
     <h1>{{ count }}</h1>
     <router-view/>
   </div>

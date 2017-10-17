@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>directive</title>
+  <script src="https://cdn.bootcss.com/vue/2.4.4/vue.min.js"></script>
+  <style>
+    #box2 div{
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      top: 100px;
+    }
+    #box2 .hello{
+      background: red;
+      left: 0;
+    }
+    #box2 .world{
+      background: purple;
+      right: 0;
+    }
+  </style>
+</head>
+<body>
+<div id="box">
+  <div v-red.foo.bar="foo">
+    {{ name }}
+  </div>
+</div>
+
+<div id="box2">
+  <div class="hello" v-drag>
+
+  </div>
+  <div class="world" v-drag>
+
+  </div>
+</div>
+
+<div id="box3">
+  <!--<input type="text" v-red>-->
+  <input type="text" v-focus>
+</div>
+
+<input type="text" v-bi>
+<script>
+  //基础自定义指令
+  Vue.directive('red',{
+    bind:function(el,binding,vnode,oldVnode){
+      el.style.background='red';
+//      console.log(el,binding,vnode,oldVnode);
+//      console.log(binding.value.color,binding.value.number);
+    },
+    inserted:function (el) {
+      el.focus();
+    }
+  });
+  let vm=new Vue({
+    el:'#box',
+    data:{
+      name:'yes',
+      foo:{
+        color:'red',
+        number:1
+      }
+    }
+  });
+
+//  自定义指令：拖拽
+  Vue.directive('drag',{
+    bind(el){
+      el.onmousedown=e=>{
+        e.preventDefault();
+        let deltaX=e.offsetX;
+        let deltaY=e.offsetY;
+//        TODO:上下这两者的区别是什么
+//        1. 火狐较老版本不支持offsetX,offsetY
+//        let deltaX=e.clientX-el.offsetLeft;
+//        let deltaY=e.clientY-el.offsetTop;
+        document.onmousemove=e=>{
+          e.preventDefault();
+          let x = e.clientX-deltaX;
+          let y = e.clientY-deltaY;
+          el.style.left = x + 'px';
+          el.style.top = y + 'px';
+        };
+        document.onmouseup=()=>document.onmousemove=null;
+      };
+      el.onmouseup=()=>document.onmousemove=document.onmouseup=null;
+    }
+  });
+  let more=new Vue({
+    el:'#box2'
+  });
+
+//  bind和update钩子函数同时绑定
+  Vue.directive('bi',function (el,binding) {
+    el.style.background='red';
+    console.log(el,binding);
+  });
+
+//  局部指令的写法
+  let option=new Vue({
+    el:'#box3',
+    directives:{
+      focus:{
+        inserted(el){
+          el.style.background='red';
+          el.focus();
+//          yes，是的~wakatime应该激活成功了
+        }
+      }
+    }
+  });
+
+</script>
+</body>
+</html>

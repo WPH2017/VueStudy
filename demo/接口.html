@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>API</title>
+  <script src="https://cdn.bootcss.com/vue/2.4.4/vue.min.js"></script>
+  <!-- vue-resource -->
+  <script src="https://cdn.bootcss.com/vue-resource/1.3.4/vue-resource.min.js"></script>
+  <!-- axios -->
+  <script src="https://cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
+</head>
+<body>
+<div id="box">
+  github:Id: <input type="text" v-model="uid">
+  <button @click="getGitUser(uid)">获取指定的github账号信息并且显示</button>
+  <img :src="user.avatar_url" alt="">
+
+  <p>模糊搜索（百度API）回车触发</p>
+  <input type="text" v-model="word" @keyup.enter="jsonp()">
+  <ul>
+    <li v-for="item in myData"><a href="">{{item}}</a></li>
+  </ul>
+
+  <p>
+    <button @click="postGoods()">拉取数据</button>
+  </p>
+  <ul>
+    <li v-for="item in goodsData">{{ item.productName }} || {{ item.salePrice }} || {{ item.productImage }}</li>
+  </ul>
+</div>
+
+<div id="axios">
+  <button @click="getGoods()">获取商品名字</button>
+  <div v-for="item in goodsData">
+    <p>商品名称：{{item.goods_name}}</p>
+    <img :src="item.goods_thumb" style="width: 100px;" alt="">
+    <!--TODO:注意下面是错误写法-->
+    <!--<img src="{{ item.goods_thumb }}" style="width: 100px;" alt="">-->
+  </div>
+</div>
+  <script>
+    //vue-resource
+    let app1=new Vue({
+      el:'#box',
+      data:{
+        user:{},
+        uid:'',
+        word:'',
+        myData:[],
+        goodsData:[]
+      },
+      methods:{
+        getGitUser(){
+          this.$http.get(`https://api.github.com/users/${this.uid}`)
+              .then(res=>{
+                this.user=res.data;
+              });
+        },
+        jsonp(){
+          this.$http.jsonp(`https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su`,{
+            params:{
+              wd:this.word
+            },
+            jsonp:'cb'
+          }).then((res)=>{
+            this.myData=res.data.s;
+          })
+        },
+        postGoods(){
+//          uri保存了一些商品信息
+          this.$http.post(`http://easy-mock.com/mock/59664d4d58618039284c7710/example/goods/list`)
+              .then((res)=>{
+                this.goodsData=res.body.data;
+              });
+        }
+      }
+    });
+//    axios
+    let app2=new Vue({
+      el:'#axios',
+      data:{
+        goodsData:[]
+      },
+      methods:{
+        getGoods(){
+          axios.get(`http://h6.duchengjiu.top/shop/api_goods.php`)
+              .then((res)=>{
+                this.goodsData=res.data.data;
+              })
+        }
+      }
+    })
+  </script>
+</body>
+</html>
