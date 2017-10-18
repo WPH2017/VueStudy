@@ -50,4 +50,8 @@ li {
 a {
   color: #42b983;
 }
+div{
+  position: absolute;
+  width: 100%;
+}
 </style>
