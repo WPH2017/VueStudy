@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>{{num}}</h1>
     <router-link :to="'/list/'+item.id" tag="button" :key="item.userName" v-for="item in list">{{item.userName}}</router-link>
     <p>
       <span style="{display: block}" v-for="(v,k,i) in yes">{{i}}-|:{{k}}:{{v}}<br></span>
@@ -39,6 +40,11 @@
         yes:''
       }
     },
+    computed:{
+      num(){
+        return this.$store.state.num;
+      }
+    },
     watch:{
       $route(){
         this.getData();
@@ -49,9 +55,7 @@
     },
     methods:{
       getData(){
-        this.yes=this.list.filter((item)=>{
-          return item.id===1*this.$route.params.userId;
-        })[0];
+        this.yes=this.list.filter(item=>item.id===1*this.$route.params.userId)[0];
       }
     }
   }

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png" @click.alt="count++">
-    <h1>{{ count }}</h1>
+    <img src="./assets/logo.png" @click.alt="count++" @click.ctrl="count--">
+    <h1>{{ count + num }}</h1>
     <a href="#/">首页</a>
     <a href="#/test">切换了</a>
     <ul>
@@ -9,6 +9,9 @@
       <router-link to="/test" exact tag="li" event="mouseenter" active-class="active">这是切换的</router-link>
       <router-link to="/test/yes/profile" tag="li" event="mouseenter" active-class="active">这是测试</router-link>
       <router-link to="/list" tag="li" event="mouseenter" active-class="active">这是测试</router-link>
+      <router-link to="/hero" tag="li" event="mouseenter" active-class="active">农药英雄</router-link>
+      <router-link to="/daliy" tag="li" event="mouseenter" active-class="active">知乎日报</router-link>
+      <router-link to="/vuex" tag="li" event="mouseenter" active-class="active">vuex</router-link>
     </ul>
     <p>当前路径在{{$route.params.yes}}</p>
     <div id="container">
@@ -25,6 +28,20 @@ export default {
   data () {
     return {
       count: 1
+    }
+  },
+  computed:{
+    num(){
+      return this.$store.state.num;
+    }
+  },
+  watch:{
+    count(n,o){
+      if(n>o){
+        this.$store.commit('increment');
+      }else{
+        this.$store.commit('less');
+      }
     }
   }
 }
