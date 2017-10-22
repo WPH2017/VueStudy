@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>props</title>
+  <script src="https://cdn.bootcss.com/vue/2.4.4/vue.js"></script>
+  <style>
+    li{
+      font-size:20px;
+      line-height:2;
+      padding: 0px 20px;
+      background: #ff0030;
+      margin:10px;
+      box-sizing: border-box;
+      color: #fff;
+      border: 2px dashed #fff;
+      border-radius: 3px;
+      box-shadow: 0 0 0 4px #ff0030, 2px 1px 6px 4px rgba(10, 10, 0, 0.5);
+      text-shadow: -1px -1px #aa3030;
+      font-weight: normal;
+    }
+  </style>
+</head>
+<body>
+<div>
+<div id="box">
+  <currency :num="1">数字{{name}}</currency>
+  <currency :str="'wph'">字符串</currency>
+  <currency :mul="1">混合</currency>
+  <currency :mul="'1'">混合</currency>
+  <currency :bol="true">布尔</currency>
+  <currency :obj="{name:1}">对象</currency>
+  <currency :fun="()=>false">函数</currency>
+  <currency :arr="[1,2]">数组</currency>
+  <!--<currency :symbol="">Symbol</currency>-->
+  <!--<currency :symbol="">Symbol</currency>-->
+</div>
+</div>
+  <script>
+    var currency=Vue.component('currency',{
+      template:`
+        <li><a href=""><slot></slot></a></li>
+      `,
+      props:{
+        num:Number,
+        mul:[Number,String],
+        str:{
+          type:String,
+          required:true
+        },
+        bol:{
+          type:Boolean,
+          default: true
+        },
+        obj:{
+          type:Object,
+          default(){
+            return {
+              name:'wph'
+            }
+          }
+        },
+        fun:{
+          type: Function,
+          validator(val){
+            return val();
+          }
+        },
+        arr:{
+          type:Array,
+          validator(val){
+            return val[0];
+          }
+        },
+        symbol:{
+          type:Symbol
+        }
+      }
+    });
+    new Vue({
+      el:'#box',
+      data:{
+        name:'wph'
+      }
+    });
+  </script>
+</body>
+</html>
